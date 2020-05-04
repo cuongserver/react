@@ -15,7 +15,7 @@ class TopNavMenu extends React.Component {
 						<div className="top-nav-menu w-full flex-m m-t-10">
 								{
 								context.stateData.groupsInMenuBar.map(group => {
-									return <MenuGroupInMenuBar {...group} {...context.modAction} />
+									return <MenuGroupInMenuBar {...group} {...context.modAction} {...context.stateData}/>
 								})
 								}
 						</div>

@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import { Route } from 'react-router';
 import 'components/Header/TopNavMenu.css';
 import 'shared/css/utilities.css'
-import { HeaderCtx, NavMenuGroupProps, ModAction } from 'components/Header/HeaderContext'
+import { HeaderCtx, NavMenuGroupProps, ModAction, StateData } from 'components/Header/HeaderContext'
 
-type MenuGroup = NavMenuGroupProps & ModAction
+type MenuGroup = NavMenuGroupProps & ModAction & StateData
 export class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
     state = {
 		offScreen: false,
@@ -14,10 +14,18 @@ export class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 
 	handleClick = () => {
 		this.props.switchGroup(this.props.groupName)
-		if (!this.state.offScreen)
+		this.props.setCurrentDropDown(this.props.groupName)
+		if (this.props.currentDropDown === this.props.groupName) {
 			this.setState({
 				dropdownShowed: !this.state.dropdownShowed
 			})
+		} else {
+			this.setState({
+				dropdownShowed: true
+			})
+        }
+
+
 	}
 
 	onMouseOver = (enterOrLeave: boolean) => {
@@ -81,7 +89,7 @@ export class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 							{
 								this.props.child &&
 								<div className={`menugroup-dropdown pos-absolute text-center fs-07-rem w-full` +
-									` ${this.state.dropdownShowed ? "flex-col-c-m" : "dis-none"}`}>
+									` ${this.state.dropdownShowed && (context.stateData.currentDropDown === this.props.groupName)? "flex-col-c-m" : "dis-none"}`}>
 									<div className={`menugroup-dropdown-inner w-90 m-t-2`}>
 										{
 											this.props.child.map(groupMember =>

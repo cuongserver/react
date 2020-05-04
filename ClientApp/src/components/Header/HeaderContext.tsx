@@ -18,6 +18,7 @@ export interface NavMenuGroupProps {
 
 export interface StateData {
     currentNavGroup: string,
+    currentDropDown: string,
     groupsInMenuBar: NavMenuGroupProps[],
     groupsInDrawer: NavMenuGroupProps[]
 }
@@ -25,7 +26,8 @@ export interface StateData {
 export interface ModAction {
     switchGroup: (arg: string) => void,
     moveToDrawer: (arg: NavMenuGroupProps) => void,
-    removeFromDrawer: (arg: NavMenuGroupProps) => void
+    removeFromDrawer: (arg: NavMenuGroupProps) => void,
+    setCurrentDropDown: (arg: string) => void
 }
 
 type HeaderState = {
@@ -38,8 +40,9 @@ export const HeaderCtx = React.createContext<HeaderState | undefined>(undefined)
 export class HeaderContext extends React.Component{
     switchGroup = (groupName: string): void => {
         this.setState((state: StateData) => ({
-            currentNavGroup: groupName
-        }), () => { });       
+            currentNavGroup: groupName,
+            currentDropDown: ''
+        }), () => {});       
     }    
 
     moveToDrawer = (group: NavMenuGroupProps): void => {
@@ -65,17 +68,24 @@ export class HeaderContext extends React.Component{
         }, () => { });
     }
 
+    setCurrentDropDown = (groupName: string): void => {
+        this.setState((state: StateData) => ({
+            currentDropDown: groupName
+        }), () => { });     
+    }
 
 
     state = {
         currentNavGroup: 'HOME',
+        currentDropDown: 'XXX',
         groupsInMenuBar: [...groupMenuMembers].sort((a, b) => {return a.id - b.id }),
         groupsInDrawer: []
     }
     modAction = {
         switchGroup: this.switchGroup,
         moveToDrawer: this.moveToDrawer,
-        removeFromDrawer: this.removeFromDrawer
+        removeFromDrawer: this.removeFromDrawer,
+        setCurrentDropDown: this.setCurrentDropDown
     }
 
 
