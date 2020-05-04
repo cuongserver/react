@@ -1,0 +1,52 @@
+﻿.top-nav-menu {
+    background: #316e66; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #34867b, #316e66, #316e66); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #34867b, #316e66, #316e66); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    height: 40px;
+    width: 100%
+}
+
+.top-nav-menu .menu-group {
+    text-align: center;
+    width: auto;
+}
+
+.top-nav-menu .menu-group:first-of-type {
+
+}
+
+.top-nav-menu .menu-group.current-group {
+    background: #797979;
+}
+.top-nav-menu .menu-group a {
+    text-decoration: none;
+    color: beige;
+}
+
+.top-nav-menu .menu-group:hover a {
+    color: black;
+    text-shadow: 0px 0px 5px beige;
+}
+
+.top-nav-menu .menu-group .active {
+    width: 100%;
+    height: 6px;
+    bottom: 0px;
+    display: block;
+    background-color: rgb(185, 160, 101);
+    border-radius: 1px;
+}
+
+.top-nav-menu .menu-group.offscreen {
+    min-width: 0px;
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+    border-style: none;
+}
+
+.menugroup-dropdown-inner {
+    background: #316e66; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #34867b, #316e66, #316e66); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #34867b, #316e66, #316e66); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

@@ -1,0 +1,24 @@
+﻿.app-outer-box {
+    background: url('/assets/images/bg-pattern.jpg') repeat-x center top;
+    background-size: 100% cover;
+}
+
+.app-inner-box {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 960px;
+    height: auto;
+    min-height: max(100vh, 568px);
+    position: relative;
+}
+
+
+/*responsive setting*/
+
+@media (max-width: 960px) {
+    .app-inner-box {
+        width: 100%;
+    }
+}
