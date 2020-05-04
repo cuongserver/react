@@ -24,4 +24,5 @@ namespace TourAgent
                 });
     }
 }
+//kill nodejs
 //taskkill /IM "node.exe" /F
