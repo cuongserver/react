@@ -1,6 +1,9 @@
 ﻿.app-outer-box {
     background: url('/assets/images/bg-pattern.jpg') repeat-x center top;
     background-size: 100% cover;
+    min-width: max(320px, 100%);
+    width: auto;
+    display: inline-block;
 }
 
 .app-inner-box {

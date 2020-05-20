@@ -4,7 +4,7 @@ import TopNavMenu from 'components/Header/TopNavMenu'
 import 'components/AppLayout/AppLayout.css';
 import 'shared/css/utilities.css'
 
-export interface NavMenuGroupProps {
+export interface NavMenuGroup {
     id: number,
     groupName: string,
     minWidthPx: number,
@@ -16,37 +16,40 @@ export interface NavMenuGroupProps {
 }
 
 
-export interface StateData {
+export interface ContextData {
     currentNavGroup: string,
     currentDropDown: string,
-    groupsInMenuBar: NavMenuGroupProps[],
-    groupsInDrawer: NavMenuGroupProps[]
+    groupsInMenuBar: NavMenuGroup[],
+    groupsInDrawer: NavMenuGroup[],
+    isDrawerExpand: boolean,
+    menuWidth: number
 }
 
-export interface ModAction {
+export interface ContextMethod {
     switchGroup: (arg: string) => void,
-    moveToDrawer: (arg: NavMenuGroupProps) => void,
-    removeFromDrawer: (arg: NavMenuGroupProps) => void,
-    setCurrentDropDown: (arg: string) => void
+    moveToDrawer: (arg: NavMenuGroup) => void,
+    removeFromDrawer: (arg: NavMenuGroup) => void,
+    setCurrentDropDown: (arg: string) => void, 
+    expandDrawer: () => void
 }
 
-type HeaderState = {
-    stateData: StateData,
-    modAction: ModAction
+export interface ContextObject {
+    data: ContextData,
+    method: ContextMethod
 }
 
-export const HeaderCtx = React.createContext<HeaderState | undefined>(undefined);
+export const HeaderCtx = React.createContext<ContextObject | undefined>(undefined);
 
 export class HeaderContext extends React.Component{
     switchGroup = (groupName: string): void => {
-        this.setState((state: StateData) => ({
+        this.setState((state: ContextData) => ({
             currentNavGroup: groupName,
             currentDropDown: ''
         }), () => {});       
     }    
 
-    moveToDrawer = (group: NavMenuGroupProps): void => {
-        this.setState((state: StateData) => {
+    moveToDrawer = (group: NavMenuGroup): void => {
+        this.setState((state: ContextData) => {
             var _groupsInDrawer = [...state.groupsInDrawer];
             _groupsInDrawer.push(group);
             _groupsInDrawer.sort((a, b) => {
@@ -58,8 +61,8 @@ export class HeaderContext extends React.Component{
         }, () => { });
     }
 
-    removeFromDrawer = (group: NavMenuGroupProps): void => {     
-        this.setState((state: StateData) => {
+    removeFromDrawer = (group: NavMenuGroup): void => {     
+        this.setState((state: ContextData) => {
             var _groupsInDrawer = [...state.groupsInDrawer];
             _groupsInDrawer.shift();
             return {
@@ -69,29 +72,39 @@ export class HeaderContext extends React.Component{
     }
 
     setCurrentDropDown = (groupName: string): void => {
-        this.setState((state: StateData) => ({
+        this.setState((state: ContextData) => ({
             currentDropDown: groupName
         }), () => { });     
     }
 
+    expandDrawer = () => {
+        this.setState((state: ContextData) => {
+            return {
+                isDrawerExpand: !this.state.isDrawerExpand
+            }
+        }, () => { });
+    }
 
     state = {
         currentNavGroup: 'HOME',
         currentDropDown: 'XXX',
         groupsInMenuBar: [...groupMenuMembers].sort((a, b) => {return a.id - b.id }),
-        groupsInDrawer: []
-    }
-    modAction = {
+        groupsInDrawer: [],
+        isDrawerExpand: false,
+        menuWidth: 960,
+    } as ContextData
+    action = {
         switchGroup: this.switchGroup,
         moveToDrawer: this.moveToDrawer,
         removeFromDrawer: this.removeFromDrawer,
-        setCurrentDropDown: this.setCurrentDropDown
-    }
+        setCurrentDropDown: this.setCurrentDropDown,
+        expandDrawer: this.expandDrawer
+    } as ContextMethod
 
 
     render() {
         return (
-            <HeaderCtx.Provider value={{ stateData: this.state, modAction: this.modAction }}>
+            <HeaderCtx.Provider value={{ data: this.state, method: this.action }}>
                 {this.props.children}
             </HeaderCtx.Provider>
         )
@@ -99,9 +112,9 @@ export class HeaderContext extends React.Component{
 }
 
 
-const groupMenuMembers: NavMenuGroupProps[] = [
+const groupMenuMembers: NavMenuGroup[] = [
     {
-        id: 1, groupName: 'HOME', minWidthPx: 100, target: '/home'
+        id: 1, groupName: 'HOME', minWidthPx: 100, target: '/'
     },
     {
         id: 2, groupName: 'COUNTER', minWidthPx: 100, child: [
@@ -136,6 +149,15 @@ const groupMenuMembers: NavMenuGroupProps[] = [
             },
 
         ]
+    },
+    {
+        id: 4, groupName: 'ABOUT', minWidthPx: 100, target: ''
+    },
+    {
+        id: 5, groupName: 'CONTACT', minWidthPx: 100, target: ''
+    },
+    {
+        id: 6, groupName: 'SUPPORT', minWidthPx: 100, target: ''
     }
 ]
 

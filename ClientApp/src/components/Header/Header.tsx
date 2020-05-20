@@ -1,21 +1,19 @@
 import * as React from 'react';
-import { Route } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
+
 import { HeaderCtx, HeaderContext } from 'components/Header/HeaderContext'
 import TopNavMenu from 'components/Header/TopNavMenu'
 import 'components/AppLayout/AppLayout.css';
 import 'shared/css/utilities.css'
 
 
-export class Header extends React.Component{
-
+class Header extends React.Component<RouteComponentProps<{}>>{
 	switchGroup(action: (arg: string) => void, newState: string) {
 		action(newState)
+		this.props.history.push('/');
 	}
 
-
 	render() {
-
-
 		return (
 			<HeaderContext>
 				<HeaderCtx.Consumer>
@@ -24,7 +22,7 @@ export class Header extends React.Component{
 							context &&
 							<React.Fragment>
 								<div className="d-flex">
-									<div className="brand-logo hov-pointer" onClick={() => this.switchGroup(context.modAction.switchGroup, `HOME`)}>
+									<div className="brand-logo hov-pointer" onClick={() => this.switchGroup(context.method.switchGroup, `HOME`)}>
 										<a className="">
 											<img src="/assets/images/company-logo.png" alt="Tour Agent" height="60px" />
 										</a>
@@ -39,3 +37,4 @@ export class Header extends React.Component{
 	}
 }
 
+export const Header_HOC = withRouter(Header);

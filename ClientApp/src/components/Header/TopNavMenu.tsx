@@ -3,28 +3,26 @@ import { Route } from 'react-router';
 import 'components/Header/TopNavMenu.css';
 import 'shared/css/utilities.css'
 import { HeaderCtx, HeaderContext } from 'components/Header/HeaderContext'
-import { MenuGroupInMenuBar } from 'components/Header/MenuGroupInMenuBar'
-
+import { MenuGroupInMenuBarWithRouter } from 'components/Header/MenuGroupInMenuBar'
+import { Toggle } from 'components/Header/Toggle'
 
 class TopNavMenu extends React.Component {
 	render() {
 		return (
 			<HeaderCtx.Consumer>
-				{context => context &&
+				{context =>
+					context &&
 					<React.Fragment>
-						<div className="top-nav-menu w-full flex-m m-t-10">
+						<div className={`flex-m top-nav-background m-t-10`}>
+							<div className="top-nav-menu w-full flex-m">
 								{
-								context.stateData.groupsInMenuBar.map(group => {
-									return <MenuGroupInMenuBar {...group} {...context.modAction} {...context.stateData}/>
-								})
-								}
+									context.data.groupsInMenuBar.map(group => {
+										return <MenuGroupInMenuBarWithRouter {...group} {...context}/>
+									})
+								}								
+							</div>	
+							<Toggle {...context} />
 						</div>
-						{
-							context.stateData.groupsInDrawer.map(group => {
-								return <div>{group.groupName}</div>
-							})
-						}
-
 					</React.Fragment>
 				}
 			</HeaderCtx.Consumer>

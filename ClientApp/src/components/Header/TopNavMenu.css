@@ -1,7 +1,9 @@
-﻿.top-nav-menu {
+﻿.top-nav-background {
     background: #316e66; /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #34867b, #316e66, #316e66); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #34867b, #316e66, #316e66); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.top-nav-menu {   
     height: 40px;
     width: 100%
 }
@@ -49,4 +51,46 @@
     background: #316e66; /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #34867b, #316e66, #316e66); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #34867b, #316e66, #316e66); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    box-shadow: 0px 0px 5px black;
+}
+
+.dis-none--ovr{
+    display: none !important;
+}
+
+/*toggle-button*/
+.toggle-button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid white;
+    border-radius: 4px;
+    position: relative;
+}
+.toggle-button .bar{
+    height: 3px;
+    width: 20px;
+    background: white;
+    transition: all ease 0.1s;
+    position: relative;
+}
+
+.toggle-button.drawer-open  .bar{
+    position: absolute;
+    margin: 0;
+}
+
+.toggle-button.drawer-open .first-bar {
+    transform: rotate(45deg);    
+}
+
+.toggle-button.drawer-open .second-bar {
+    background: transparent;
+}
+
+.toggle-button.drawer-open .third-bar {
+    transform: rotate(-45deg);    
+}
+
+.toggle-button.deactivated{
+    display: none;
 }
