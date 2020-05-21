@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-
+import Drawer from 'components/Header/Drawer'
 import { HeaderCtx, HeaderContext } from 'components/Header/HeaderContext'
 import TopNavMenu from 'components/Header/TopNavMenu'
 import 'components/AppLayout/AppLayout.css';
@@ -21,14 +21,17 @@ class Header extends React.Component<RouteComponentProps<{}>>{
 						context =>
 							context &&
 							<React.Fragment>
-								<div className="d-flex">
-									<div className="brand-logo hov-pointer" onClick={() => this.switchGroup(context.method.switchGroup, `HOME`)}>
-										<a className="">
-											<img src="/assets/images/company-logo.png" alt="Tour Agent" height="60px" />
-										</a>
+								<div className={`pos-relative`}>
+									<div className="d-flex">
+										<div className="brand-logo hov-pointer" onClick={() => this.switchGroup(context.method.switchGroup, `HOME`)}>
+											<a className="">
+												<img src="/assets/images/company-logo.png" alt="Tour Agent" height="60px" />
+											</a>
+										</div>
 									</div>
-								</div>
-								<TopNavMenu />
+									<TopNavMenu />
+									<Drawer	/>
+								</div>								
 							</React.Fragment>
 					}
 				</HeaderCtx.Consumer>

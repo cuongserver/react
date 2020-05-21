@@ -31,7 +31,8 @@ export interface ContextMethod {
     moveToDrawer: (arg: NavMenuGroup) => void,
     removeFromDrawer: (arg: NavMenuGroup) => void,
     setCurrentDropDown: (arg: string) => void, 
-    expandDrawer: () => void
+    expandDrawer: () => void,
+    closeDrawer: () => void
 }
 
 export interface ContextObject {
@@ -86,6 +87,14 @@ export class HeaderContext extends React.Component{
         }, () => { });
     }
 
+    closeDrawer = () => {
+        this.setState((state: ContextData) => {
+            return {
+                isDrawerExpand: false
+            }
+        }, () => { });
+    }
+
     state = {
         groupMembers: groupMenuMembers,
         currentNavGroup: 'HOME',
@@ -100,7 +109,8 @@ export class HeaderContext extends React.Component{
         moveToDrawer: this.moveToDrawer,
         removeFromDrawer: this.removeFromDrawer,
         setCurrentDropDown: this.setCurrentDropDown,
-        expandDrawer: this.expandDrawer
+        expandDrawer: this.expandDrawer,
+        closeDrawer: this.closeDrawer
     } as ContextMethod
 
 

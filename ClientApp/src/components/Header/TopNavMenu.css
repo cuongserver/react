@@ -96,3 +96,18 @@
 .toggle-button.deactivated{
     display: none;
 }
+
+.zone-drawer {
+    background: #316e66; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #34867b, #316e66, #316e66); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #34867b, #316e66, #316e66); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    transition: height ease 0.1s;
+}
+
+.drawer-enabled.drawer-expand{
+    height: 300px
+}
+
+.drawer-enabled.drawer-collapse {
+    height: 0px;
+}
