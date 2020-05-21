@@ -16,7 +16,9 @@
 .top-nav-menu .menu-group:first-of-type {
 
 }
-
+.top-nav-menu-container{
+    overflow: hidden;
+}
 .top-nav-menu .menu-group.current-group {
     background: #797979;
 }

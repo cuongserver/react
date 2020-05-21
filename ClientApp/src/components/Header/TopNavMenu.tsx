@@ -14,14 +14,18 @@ class TopNavMenu extends React.Component {
 					context &&
 					<React.Fragment>
 						<div className={`flex-m top-nav-background m-t-10`}>
-							<div className="top-nav-menu w-full flex-m">
-								{
-									context.data.groupsInMenuBar.map(group => {
-										return <MenuGroupInMenuBarWithRouter {...group} {...context}/>
-									})
-								}								
-							</div>	
-							<Toggle {...context} />
+							<div className="top-nav-menu-container">
+								<div className="top-nav-menu w-full flex-m">
+									{
+										context.data.groupsInMenuBar.map(group => {
+											return <MenuGroupInMenuBarWithRouter {...group} {...context} />
+										})
+									}
+								</div>
+							</div>
+							<div>
+								<Toggle {...context} />
+							</div>
 						</div>
 					</React.Fragment>
 				}

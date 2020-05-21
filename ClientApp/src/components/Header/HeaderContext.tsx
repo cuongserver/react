@@ -17,6 +17,7 @@ export interface NavMenuGroup {
 
 
 export interface ContextData {
+    groupMembers: NavMenuGroup[],
     currentNavGroup: string,
     currentDropDown: string,
     groupsInMenuBar: NavMenuGroup[],
@@ -86,6 +87,7 @@ export class HeaderContext extends React.Component{
     }
 
     state = {
+        groupMembers: groupMenuMembers,
         currentNavGroup: 'HOME',
         currentDropDown: 'XXX',
         groupsInMenuBar: [...groupMenuMembers].sort((a, b) => {return a.id - b.id }),

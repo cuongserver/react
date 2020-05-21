@@ -55,14 +55,12 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 
 	private handleWhenOffscreen = () => {
 		let node = ReactDOM.findDOMNode(this) as HTMLElement;
-		let parentNode = node.parentNode as HTMLElement;
-		let parentWidth = parentNode.getBoundingClientRect().left + parentNode.clientWidth;
+		let parentNode2 = node.parentNode as HTMLElement;
+		let parentNode1 = parentNode2.parentNode as HTMLElement;
+		let parentNode = parentNode1.parentNode as HTMLElement;
+		let parentWidth = parentNode.getBoundingClientRect().left + parentNode.clientWidth - 35;
 		let rectX = node.getBoundingClientRect().left + this.props.minWidthPx
 
-		this.setState({
-			rectX: Math.round(rectX),
-			parentWidth: Math.round(parentWidth)
-		})
 
 		let obj: NavMenuGroup = {
 			id: this.props.id,
@@ -93,6 +91,12 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 		}
 	}
 
+	get positionCalc() {
+		let x = 0;
+		let groups = this.props.data.groupMembers.filter(group => group.id <= this.props.id)
+			.forEach(group => x += group.minWidthPx);
+		return x;
+    }
 
 	public render() {
 		return (
@@ -103,7 +107,7 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 						+ ` ${this.props.data.currentNavGroup == this.props.groupName ? "current-group" : ""}`}
 						onClick={(e) => this.handleClickAtHeader()}>
 						<div className={`${this.props.data.currentNavGroup == this.props.groupName ? "active pos-absolute" : "inactive"}`}></div>
-						<a className="">{this.state.rectX}:{this.state.parentWidth}</a>
+						<a className="">{this.props.groupName}</a>
 					</div>
 					{
 						this.props.child &&
