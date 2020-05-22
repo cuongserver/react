@@ -3,6 +3,7 @@ import { Route } from 'react-router';
 import TopNavMenu from 'components/Header/TopNavMenu'
 import 'components/AppLayout/AppLayout.css';
 import 'shared/css/utilities.css'
+import { Observable, Subject } from'rxjs'
 
 export interface NavMenuGroup {
     id: number,
@@ -23,8 +24,10 @@ export interface ContextData {
     groupsInMenuBar: NavMenuGroup[],
     groupsInDrawer: NavMenuGroup[],
     isDrawerExpand: boolean,
-    menuWidth: number
+    menuWidth: number,
+    onDrawerExpand: Subject<any>
 }
+
 
 export interface ContextMethod {
     switchGroup: (arg: string) => void,
@@ -84,7 +87,7 @@ export class HeaderContext extends React.Component{
             return {
                 isDrawerExpand: !this.state.isDrawerExpand
             }
-        }, () => { });
+        }, () => { this.state.onDrawerExpand.next() });
     }
 
     closeDrawer = () => {
@@ -95,6 +98,8 @@ export class HeaderContext extends React.Component{
         }, () => { });
     }
 
+
+
     state = {
         groupMembers: groupMenuMembers,
         currentNavGroup: 'HOME',
@@ -103,6 +108,7 @@ export class HeaderContext extends React.Component{
         groupsInDrawer: [],
         isDrawerExpand: false,
         menuWidth: 960,
+        onDrawerExpand: new Subject<any>()
     } as ContextData
     action = {
         switchGroup: this.switchGroup,
@@ -114,9 +120,10 @@ export class HeaderContext extends React.Component{
     } as ContextMethod
 
 
+
     render() {
         return (
-            <HeaderCtx.Provider value={{ data: this.state, method: this.action }}>
+            <HeaderCtx.Provider value={{ data: this.state, method: this.action}}>
                 {this.props.children}
             </HeaderCtx.Provider>
         )
@@ -126,7 +133,7 @@ export class HeaderContext extends React.Component{
 
 const groupMenuMembers: NavMenuGroup[] = [
     {
-        id: 1, groupName: 'HOME', minWidthPx: 100, target: '/'
+        id: 1, groupName: 'HOME', minWidthPx: 100, target: '/', child:[]
     },
     {
         id: 2, groupName: 'COUNTER', minWidthPx: 100, child: [
@@ -163,13 +170,13 @@ const groupMenuMembers: NavMenuGroup[] = [
         ]
     },
     {
-        id: 4, groupName: 'ABOUT', minWidthPx: 100, target: ''
+        id: 4, groupName: 'ABOUT', minWidthPx: 100, target: '', child: []
     },
     {
-        id: 5, groupName: 'CONTACT', minWidthPx: 100, target: ''
+        id: 5, groupName: 'CONTACT', minWidthPx: 100, target: '', child: []
     },
     {
-        id: 6, groupName: 'SUPPORT', minWidthPx: 100, target: ''
+        id: 6, groupName: 'SUPPORT', minWidthPx: 100, target: '', child: []
     }
 ]
 

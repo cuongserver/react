@@ -13,23 +13,19 @@ class TopNavMenu extends React.Component {
 				{context =>
 					context &&
 					<React.Fragment>
-						<div className={`pos-relative`}>
-							<div className={`flex-m top-nav-background m-t-10`}>
-								<div className="top-nav-menu-container" onClick={(e) => { context.method.closeDrawer() }}>
-									<div className="top-nav-menu w-full flex-m">
-										{
-											context.data.groupsInMenuBar.map(group => {
-												return <MenuGroupInMenuBarWithRouter {...group} {...context} />
-											})
-										}
-									</div>
-								</div>
-								<div>
-									<Toggle {...context} />
+						<div className={`flex-m top-nav-background m-t-10`}>
+							<div className="top-nav-menu-container" onClick={(e) => { context.method.closeDrawer() }}>
+								<div className="top-nav-menu w-full flex-m">
+									{
+										context.data.groupsInMenuBar.map(group => {
+											return <MenuGroupInMenuBarWithRouter {...group} {...context} />
+										})
+									}
 								</div>
 							</div>
-						</div>
-						
+							<Toggle {...context} />
+
+						</div>						
 					</React.Fragment>
 				}
 			</HeaderCtx.Consumer>

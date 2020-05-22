@@ -4,16 +4,19 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import 'components/Header/TopNavMenu.css';
 import 'shared/css/utilities.css'
 import { HeaderCtx, NavMenuGroup, ContextObject } from 'components/Header/HeaderContext'
+import { Subscription } from 'rxjs';
 
 type MenuGroup = NavMenuGroup & ContextObject & RouteComponentProps<{}>
 class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
-    state = {
-		offScreen: false,
-		dropdownShowed: false,
-		inDrawer: false,
-		rectX: 0,
-		parentWidth: 0
+	get inDrawer() {
+		return this.props.data.groupsInDrawer.find(item => item.id === this.props.id) !== undefined;
 	}
+
+    state = {
+		dropdownShowed: false,
+		subs: new Array<Subscription>()
+	}
+
 
 	handleClickAtHeader = () => {
 		if (this.props.target) {
@@ -41,16 +44,24 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 		})
 	}
 
-	onMouseOver = (enterOrLeave: boolean) => {
-		
-	}
 	componentDidMount() {
+		this.setState({
+			subs: this.state.subs.push(
+				this.props.data.onDrawerExpand.asObservable().subscribe((val) => {
+					this.setState({
+						dropdownShowed: false
+					});
+				})
+			)
+		});	
+
 		window.addEventListener('resize', this.handleWhenOffscreen);
 		this.handleWhenOffscreen();
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.handleWhenOffscreen)
+		this.state.subs.forEach(sub => sub.unsubscribe());
 	}
 
 	private handleWhenOffscreen = () => {
@@ -58,8 +69,8 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 		let parentNode2 = node.parentNode as HTMLElement;
 		let parentNode1 = parentNode2.parentNode as HTMLElement;
 		let parentNode = parentNode1.parentNode as HTMLElement;
-		let parentWidth = parentNode.getBoundingClientRect().left + parentNode.clientWidth - 35;
-		let rectX = node.getBoundingClientRect().left + this.props.minWidthPx
+		let parentWidth = parentNode.getBoundingClientRect().width - 35;
+		let rectX = this.positionCalc;
 
 
 		let obj: NavMenuGroup = {
@@ -70,30 +81,19 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 			child: this.props.child
 		}
 
-		if (rectX >= parentWidth && !this.props.data.groupsInDrawer.find( item => item.id === this.props.id)) {
-			this.props.method.moveToDrawer(obj)
-			this.setState({
-				inDrawer: true
-			})
+		if (rectX >= parentWidth && this.inDrawer === false) {
+			this.props.method.moveToDrawer(obj);
 		}
 
-		if (rectX < parentWidth && this.props.data.groupsInDrawer.find( item => item.id === this.props.id)) {
-			this.props.method.removeFromDrawer(obj)
-			this.setState({
-				inDrawer: false
-			})
+		if (rectX < parentWidth && this.inDrawer === true) {
+			this.props.method.removeFromDrawer(obj);
 		}
-
-		//if ((rectX >= parentWidth) !== this.state.offScreen) {
-		//	this.setState({
-		//		offScreen: rectX >= parentWidth
-		//	})
-		//}
 	}
+
 
 	get positionCalc() {
 		let x = 0;
-		let groups = this.props.data.groupMembers.filter(group => group.id <= this.props.id)
+		this.props.data.groupMembers.filter(group => group.id <= this.props.id)
 			.forEach(group => x += group.minWidthPx);
 		return x;
     }
@@ -101,9 +101,9 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 	public render() {
 		return (
 			<React.Fragment>
-				<div className={`pos-relative h-full` +` ${this.props.data.groupsInDrawer.find( item => item.id === this.props.id) ? "dis-none--ovr" : ""}`} style={{ minWidth: this.props.minWidthPx + `px` }}>
+				<div className={`pos-relative h-full` +` ${this.inDrawer ? "dis-none--ovr" : ""}`} style={{ minWidth: this.props.minWidthPx + `px` }}>
 					<div className={`menu-group hov-pointer flex-c-m h-full w-full fs-09-rem pos-relative`
-						+ ` ${this.state.offScreen ? "offscreen" : "onscreen"}`
+						+ ` ${this.inDrawer ? "offscreen" : "onscreen"}`
 						+ ` ${this.props.data.currentNavGroup == this.props.groupName ? "current-group" : ""}`}
 						onClick={(e) => this.handleClickAtHeader()}>
 						<div className={`${this.props.data.currentNavGroup == this.props.groupName ? "active pos-absolute" : "inactive"}`}></div>
@@ -113,7 +113,7 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 						this.props.child &&
 						<div className={`menugroup-dropdown pos-absolute text-center fs-07-rem w-full` +
 							` ${this.state.dropdownShowed && (this.props.data.currentDropDown === this.props.groupName) ? "flex-col-c-m" : "dis-none"}`
-							+ ` ${this.state.inDrawer ? "dis-none--ovr" : ""}`}>
+							+ ` ${this.inDrawer ? "dis-none--ovr" : ""}`}>
 							<div className={`menugroup-dropdown-inner w-full m-t-2`}>
 								{
 									this.props.child.map(groupMember =>

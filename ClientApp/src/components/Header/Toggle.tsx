@@ -13,7 +13,7 @@ export class Toggle extends React.Component<ContextObject, any> {
     public render() {
         return (
             <React.Fragment>
-                <div className={`flex-col-c-m toggle-button p-t-3 p-b-3 p-l-3 p-r-3 m-r-5`
+                <div className={`flex-col-c-m toggle-button p-t-3 p-b-3 p-l-3 p-r-3 m-r-5 m-l-auto`
                     + ` ${this.props.data.isDrawerExpand ? "drawer-open" : ""}`
                     + ` ${this.props.data.groupsInDrawer.length > 0 ? "" : "deactivated"}`} onClick={this.toggleDrawer}>
                     <div className={`bar first-bar m-b-3`}></div>
