@@ -70,25 +70,25 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 			child: this.props.child
 		}
 
-		if (rectX >= parentWidth && !this.state.offScreen) {
+		if (rectX >= parentWidth && !this.props.data.groupsInDrawer.find( item => item.id === this.props.id)) {
 			this.props.method.moveToDrawer(obj)
 			this.setState({
 				inDrawer: true
 			})
 		}
 
-		if (rectX < parentWidth && this.state.offScreen) {
+		if (rectX < parentWidth && this.props.data.groupsInDrawer.find( item => item.id === this.props.id)) {
 			this.props.method.removeFromDrawer(obj)
 			this.setState({
 				inDrawer: false
 			})
 		}
 
-		if ((rectX >= parentWidth) !== this.state.offScreen) {
-			this.setState({
-				offScreen: rectX >= parentWidth
-			})
-		}
+		//if ((rectX >= parentWidth) !== this.state.offScreen) {
+		//	this.setState({
+		//		offScreen: rectX >= parentWidth
+		//	})
+		//}
 	}
 
 	get positionCalc() {
@@ -101,7 +101,7 @@ class MenuGroupInMenuBar extends React.Component<MenuGroup, any> {
 	public render() {
 		return (
 			<React.Fragment>
-				<div className={`pos-relative h-full`} style={{ minWidth: this.props.minWidthPx + `px` }}>
+				<div className={`pos-relative h-full` +` ${this.props.data.groupsInDrawer.find( item => item.id === this.props.id) ? "dis-none--ovr" : ""}`} style={{ minWidth: this.props.minWidthPx + `px` }}>
 					<div className={`menu-group hov-pointer flex-c-m h-full w-full fs-09-rem pos-relative`
 						+ ` ${this.state.offScreen ? "offscreen" : "onscreen"}`
 						+ ` ${this.props.data.currentNavGroup == this.props.groupName ? "current-group" : ""}`}
