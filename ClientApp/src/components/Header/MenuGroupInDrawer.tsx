@@ -8,11 +8,18 @@ import { HeaderCtx, NavMenuGroup, ContextObject } from 'components/Header/Header
 type MenuGroup = NavMenuGroup & ContextObject & RouteComponentProps<{}>
 
 class MenuGroupInDrawer extends React.Component<MenuGroup, any> {
+
+    handleClickToNavigate = (e: React.MouseEvent) => {
+        let target = e.currentTarget.getAttribute('data-target') || '/';
+        this.props.history.push(target);
+        this.props.method.switchGroup(this.props.groupName)
+    }
+
     public render() {
         let links;
         if (this.props.child && this.props.child.length > 0) {
             links = this.props.child.map(item =>
-                <h6>{item.caption}</h6>
+                <h6 className={`hov-pointer`} onClick={this.handleClickToNavigate} data-target={item.target}>{item.caption}</h6>
             )
         }
         return (

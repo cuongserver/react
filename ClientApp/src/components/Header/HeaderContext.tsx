@@ -50,7 +50,7 @@ export class HeaderContext extends React.Component{
         this.setState((state: ContextData) => ({
             currentNavGroup: groupName,
             currentDropDown: ''
-        }), () => {});       
+        }), () => {this.closeDrawer()});       
     }    
 
     moveToDrawer = (group: NavMenuGroup): void => {

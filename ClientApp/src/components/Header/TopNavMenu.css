@@ -110,4 +110,5 @@
 
 .drawer-enabled.drawer-collapse {
     height: 0px;
+    overflow: hidden
 }
